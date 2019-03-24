@@ -1,6 +1,7 @@
 <?php
-
-require_once ('lib/funcs.php');
+//phpinfo();die();
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR . "lib" . DIRECTORY_SEPARATOR . "funcs.php";
+include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR . "bootstrap.php";
 
 $get = isset($_GET['page']) ? $_GET['page'] : 'home_temporaria';
 
@@ -25,6 +26,54 @@ $get = isset($_GET['page']) ? $_GET['page'] : 'home_temporaria';
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+
+    <!-- Modal -->
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+
+
 
 </head>
 
@@ -107,6 +156,11 @@ $get = isset($_GET['page']) ? $_GET['page'] : 'home_temporaria';
 <script>
     $(document).ready(function() {
         var div = document.getElementById('div_principal');
-        div.style.background = 'url(teste.jpg)';
+        div.style.background = 'url(img/background/background_default.jpg)';
     });
+
+    $( document ).ready(function() {
+        var div = document.getElementById('tela_produtos');
+        //div.style.background = 'url(img/background/produtos.jpg)';
+    })
 </script>

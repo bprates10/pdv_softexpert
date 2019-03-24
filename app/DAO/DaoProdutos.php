@@ -104,7 +104,12 @@ class DaoProdutos extends BaseDAO
         $con = $this->getConexao();
         $con->connect();
 
-        $sql = "select count(distinct id) / count(distinct id_categoria) as cnt from produtos";
+        $sql = "select
+                  case
+                    when count(distinct id) > 0 or count(distinct id_categoria) > 0 then count(distinct id) / count(distinct id_categoria)
+                    else 0
+                  end as cnt
+                from produtos;";
 
         $result = $con->query($sql);
         $count = 0;

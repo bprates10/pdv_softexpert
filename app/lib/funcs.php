@@ -36,6 +36,7 @@ function routes($page) {
                 $_SESSION['info_views']['cards']['card_3']['percentual']    = "81% das vendas";
                 $_SESSION['info_views']['input']['input1']                  = "Código da Categoria :";
                 $_SESSION['info_views']['input']['input2']                  = "Descrição :";
+                $_SESSION['info_views']['input']['input3']                  = "Imposto Vinculado :";
 
                 require_once ('view/cadastros/frame_generico.php');
                 unset($_SESSION['info_views']);
@@ -49,9 +50,9 @@ function routes($page) {
                 $_SESSION['info_views']['cards']['card_2']                  = "Categorias Sem Imposto";
                 $_SESSION['info_views']['cards']['card_3']['desc']          = "Valor Imposto / Total NF";
                 $_SESSION['info_views']['cards']['card_3']['percentual']    = "11% das vendas";
-                $_SESSION['info_views']['input']['input1']                  = "Código do Imposto :";
-                $_SESSION['info_views']['input']['input2']                  = "Descrição :";
-                $_SESSION['info_views']['input']['input3']                  = "Percentual % :";
+                $_SESSION['info_views']['input']['input1']                  = "Descrição :";
+                $_SESSION['info_views']['input']['input2']                  = "Valor (R$) :";
+                $_SESSION['info_views']['input']['input3']                  = "Percentual (%) :";
 
                 require_once ('view/cadastros/frame_generico.php');
                 unset($_SESSION['info_views']);

@@ -32,6 +32,11 @@ class Conexao
         } else {
             $strConn = "host=$this->host port=$this->port dbname=$this->base user=$this->user password=$this->pass";
             $this->conn = pg_connect($strConn) or die("Impossível abrir conexão");
+
+            $this->checkTable('impostos');
+            $this->checkTable('categorias');
+            $this->checkTable('produtos');
+
             return $this->conn;
         }
     }
@@ -50,18 +55,70 @@ class Conexao
             $this->conn->pg_close();
     }
 
-    public function fetchAll($res) {
+    /* Verifica se a tabela existe na base de dados
+     * Recebe uma string com o nome da tabela
+     * Não retorna valor
+    */
+    public function checkTable($table) {
+        $sql = "select count(*) as cnt from pg_tables where tablename = '$table' and schemaname = ANY(current_schemas(true))";
+
+        $res = $this->query($sql);
+        $result = false;
         if ($res) {
-            var_dump($res);
-            //return $res->fetch_all(MYSQLI_ASSOC);
+            while ($rs = pg_fetch_assoc($res)) {
+                if (isset($rs['cnt']) && $rs['cnt'] > 0) {
+                    $result = true;
+                }
+            }
+        }
+
+        // Cria a tabela se ela não existir
+        if (!$result) {
+            $this->createTable($table);
         }
     }
 
-    /*
-    public function fetch($res) {
-        if ($res)
-            return $res->fetch(MYSQLI_ASSOC);
+    /* Cria uma tabela na base de dados
+     * Recebe uma string com o nome da tabela
+     * Não retorna valor
+    */
+    public function createTable($table) {
+        $params     = [];
+        $params[0]  = "id Serial PRIMARY KEY";
+
+        switch ($table) {
+            case 'produtos':
+                $params[1] = ",codigo text";
+                $params[2] = ",descricao text";
+                $params[3] = ",preco float";
+                $params[4] = ",id_categoria integer references categorias(id)";
+                break;
+            case 'categorias':
+                $params[1] = ",descricao text";
+                $params[2] = ",id_imposto integer references impostos(id)";
+                $params[3] = "";
+                $params[4] = "";
+                break;
+            case 'impostos':
+                $params[1] = ",descricao text";
+                $params[2] = ",valor numeric";
+                $params[3] = "";
+                $params[4] = "";
+                break;
+            case 'teste':
+                $params[1] = ",tableteste text";
+                $params[2] = ",tabteste integer";
+                $params[3] = "";
+                $params[4] = "";
+                break;
+        }
+
+        $sql = "CREATE TABLE $table
+                (
+                    $params[0] " . " $params[1] " . " $params[2] " . " $params[3] " . " $params[4]
+                )";
+
+        $this->query($sql);
+
     }
-    public function fetch_assoc ($res) {
-    }*/
 }

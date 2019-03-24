@@ -43,6 +43,23 @@
         </div>
     </li>
 
+    <!-- Nav Item - Relatórios / Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-adobe"></i>
+            <span>Relatórios</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Relatórios de:</h6>
+                <!-- antiga buttons.html, cards.html, cards.html -->
+                <a class="collapse-item" href="index.php?page=cadastroProdutos">Produtos Cadastrados</a>
+                <a class="collapse-item" href="index.php?page=cadastroCategorias">Categorias Cadastradas</a>
+                <a class="collapse-item" href="index.php?page=cadastroImpostos">Impostos Cadastrados</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -54,7 +71,6 @@
                 <h6 class="collapse-header">Balcão:</h6>
                 <a class="collapse-item" href="utilities-color.html">Venda</a>
                 <a class="collapse-item" href="utilities-border.html">Estorno</a>
-                <a class="collapse-item" href="utilities-animation.html">Relatório</a>
                 <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
         </div>

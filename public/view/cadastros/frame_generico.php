@@ -31,6 +31,9 @@ if ($objeto == "Produtos") {
     $arrList = $obj->getListagem();
     $value1  = $obj->getContagemTotal();
     $value2  = $obj->getProdutosSemCategoria();
+
+    $obj = new \DAO\DaoCategorias();
+    $value3  = $obj->getListagem();
 }
 
 if ($objeto == "Categorias") {
@@ -39,8 +42,13 @@ if ($objeto == "Categorias") {
     $obj = new \DAO\DaoCategorias();
     $arrList = $obj->getListagem();
     $value1  = $obj->getContagemTotal();
+
     $obj     = new DaoProdutos();
     $value2  = $obj->getMediaProdutosPorCategoria();
+
+    $obj     = new \DAO\DaoImpostos();
+    $value3  = $obj->getListagem();
+
 }
 
 if ($objeto == "Impostos") {
@@ -55,7 +63,7 @@ if ($objeto == "Impostos") {
 
 ?>
 
-<div class="container-fluid" id="tela_produtos">
+<div class="container-fluid" id="<?= $id_div ?>">
     <!-- Título -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $titulo ?></h1>
@@ -122,44 +130,78 @@ if ($objeto == "Impostos") {
     </div>
     <!-- Fim Cards -->
 
-    <!-- Inputs / Register -->
+    <!-- Campos de Input e Buttons -->
     <div class="row">
+        <!-- Inputs -->
         <div class="col-xl-8 col-lg-8">
+
+            <!-- Input 1 -->
             <div class="card shadow mb-1">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input1 ?></div>
-                <input type="text">
-                <!-- Card Header - Dropdown -->
+                <input type="text" id="input_1" onblur="habilitaBotaoCadastrar()" onkeyup="validaCaractere(this)">
             </div>
 
+            <!-- Input 2 -->
             <div class="card shadow mb-1">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input2 ?></div>
-                <input type="text">
+                <input type="text" id="input_2" onblur="habilitaBotaoCadastrar()">
             </div>
 
-            <?php if (!empty($input3)) : ?>
+            <!-- Input 3 -->
+            <?php if (isset($input3) && !empty($input3)) : ?>
             <div class="card shadow mb-4">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input3 ?></div>
-                <select>
-                    <option>UM</option>
-                    <option>DOIS</option>
-                </select>
+                <?php if (!empty($objeto) && $objeto != "Impostos") : ?>
+                    <select  id="input_3" class="custom-select" onblur="habilitaBotaoCadastrar()">
+                        <?php if (!empty($value3)) :
+                            foreach ($value3 as $item) :
+                                if ($objeto == "Categorias") :
+                                    $var = $item->getValor() . "%" . " - " . $item->getDescricao();
+                                else :
+                                    $var = $item->getDescricao();
+                                endif; ?>
+                        <option value="<?= $item->getId() ?>"><?= $var ?></option>
+                        <?php endforeach; else : ?>
+                        <option value="" selected disabled>Não existem <?= $objeto ?> cadastrados !</option>
+                        <?php endif; ?>
+                    </select>
+                <?php else : ?>
+                <input type="text" id="input_3">
+                <?php endif; ?>
             </div>
             <?php endif; ?>
-        </div>
 
+        </div>
+        <!-- Fim Campos -->
+
+        <!-- Buttons -->
         <div class="col-xl-4 col-lg-4">
             <div class="card shadow mb-5">
-                <input type="button" value="CADASTRAR" class="btn btn-success">
+                <input type="button" id="btnCadastrar" value="CADASTRAR" class="btn btn-success" onclick="cadastrar()" disabled>
             </div>
             <div class="card shadow mb-4">
-                <input type="button" value="LIMPAR" class="btn btn-danger">
+                <input type="button" value="LIMPAR" class="btn btn-danger" onclick="limparCampos()">
             </div>
+
+            <button id="myBtn" onclick="kakaka()">Campo obrigatório não preenchido !</button>
+
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>O campo uepa de preenchimento obrigatório não foi </p>
+                </div>
+
+            </div>
+
         </div>
     </div>
+    <!-- Fim Campos de Entrada -->
 
     <div class="row">
         <div class="content table-responsive table-full-width">
-            <table class="table table-hover table-striped" cellspacing="0" width="100%">
+            <table id="grid" class="table table-hover table-striped" cellspacing="0" width="100%">
                 <thead class="header">
                 <th><?= $menus[0] ?></th>
                 <th><?= $menus[1] ?></th>
@@ -196,3 +238,72 @@ if ($objeto == "Impostos") {
         </div>
     </div>
 </div>
+
+<script>
+function teste(){
+    window.alert("O código da tecla pressionada foi: " + event.keyCode);
+}
+    document.input_1.onkeypress = teste;
+    function habilitaBotaoCadastrar() {
+        var input1 = $('#input_1').val();
+        var input2 = $('#input_2').val();
+        var input3 = $('#input_3').val();
+
+        input1.replace(" ")
+
+        if ( input1 != "" && input2 != "" && (input3 != null || input3 != "") ) {
+            $('#btnCadastrar').removeAttr('disabled');
+        } else {
+            $('#btnCadastrar').attr('disabled', 'disabled');
+        }
+    };
+
+    function validaCaractere(item) {
+        alert(item.value);
+    }
+
+    function limparCampos() {
+        $('#input_1').val("");
+        $('#input_2').val("");
+        $('#input_3').val("");
+    }
+
+    function cadastrar() {
+        var input1 = $('#input_1').val();
+        var input2 = $('#input_2').val();
+        var input3 = $('#input_3').val();
+
+        console.log(input1, input2, input3);
+    }
+
+function showModalErro() {
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+}
+
+
+</script>
