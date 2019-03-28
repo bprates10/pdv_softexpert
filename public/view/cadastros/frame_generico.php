@@ -17,7 +17,7 @@ $card1  = $_SESSION['info_views']['cards']['card_1'];
 $card2  = $_SESSION['info_views']['cards']['card_2'];
 $card3  = $_SESSION['info_views']['cards']['card_3'];
 $input1 = $_SESSION['info_views']['input']['input1'];
-$input2 = $_SESSION['info_views']['input']['input2'];
+$input2 = isset($_SESSION['info_views']['input']['input2']) ? $_SESSION['info_views']['input']['input2'] : "";
 $input3 = isset($_SESSION['info_views']['input']['input3']) ? $_SESSION['info_views']['input']['input3'] : "";
 
 $objeto = $_SESSION['info_views']['call'];
@@ -26,6 +26,8 @@ $menus = ["ID", "Descrição"];
 if ($objeto == "Produtos") {
     array_push($menus, "Preço");
     array_push($menus, "Categoria");
+
+    $input4  = "Preço (R$)";
 
     $obj = new DaoProdutos();
     $arrList = $obj->getListagem();
@@ -64,7 +66,7 @@ if ($objeto == "Impostos") {
 ?>
 
 <div class="container-fluid" id="<?= $id_div ?>">
-    <!-- Título -->
+    <!-- Título da View -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><?= $titulo ?></h1>
     </div>
@@ -138,21 +140,31 @@ if ($objeto == "Impostos") {
             <!-- Input 1 -->
             <div class="card shadow mb-1">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input1 ?></div>
-                <input type="text" id="input_1" onblur="habilitaBotaoCadastrar()" onkeyup="validaCaractere(this)">
+                <input type="text" id="input_1" onblur="habilitaBotaoCadastrar()">
             </div>
 
             <!-- Input 2 -->
+            <?php if ($objeto != "Categorias") : ?>
             <div class="card shadow mb-1">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input2 ?></div>
-                <input type="text" id="input_2" onblur="habilitaBotaoCadastrar()">
+                <?php
+                $tipo = "text";
+                $limit = "";
+                if ($objeto == "Impostos") {
+                    $tipo = "number";
+                    $limit = 'onkeyup="limitarInput(this)"';
+                }
+                ?>
+                <input type="<?= $tipo ?>" id="input_2" <?= $limit ?> onblur="habilitaBotaoCadastrar()">
             </div>
+            <?php endif; ?>
 
             <!-- Input 3 -->
             <?php if (isset($input3) && !empty($input3)) : ?>
             <div class="card shadow mb-4">
                 <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input3 ?></div>
                 <?php if (!empty($objeto) && $objeto != "Impostos") : ?>
-                    <select  id="input_3" class="custom-select" onblur="habilitaBotaoCadastrar()">
+                    <select id="input_3" class="custom-select" onblur="habilitaBotaoCadastrar()">
                         <?php if (!empty($value3)) :
                             foreach ($value3 as $item) :
                                 if ($objeto == "Categorias") :
@@ -166,9 +178,19 @@ if ($objeto == "Impostos") {
                         <?php endif; ?>
                     </select>
                 <?php else : ?>
-                <input type="text" id="input_3">
+                <input type="text" id="input_3" onblur="habilitaBotaoCadastrar()">
                 <?php endif; ?>
             </div>
+            <?php else : ?>
+                <input type="text" id="input_3" value="imposto" hidden>
+            <?php endif; ?>
+
+            <!-- Input 4 -->
+            <?php if ($objeto == "Produtos" && (isset($input4) && !empty($input3)) ) : ?>
+                <div class="card shadow mb-4">
+                    <div class="text-black-50 font-weight-bold text-primary text-uppercase mb-1"><?= $input4 ?></div>
+                    <input type="text" maxlength="7" onkeyup="return(formataMoeda(this,'.',',',event))" id="input_4">
+                </div>
             <?php endif; ?>
 
         </div>
@@ -177,24 +199,11 @@ if ($objeto == "Impostos") {
         <!-- Buttons -->
         <div class="col-xl-4 col-lg-4">
             <div class="card shadow mb-5">
-                <input type="button" id="btnCadastrar" value="CADASTRAR" class="btn btn-success" onclick="cadastrar()" disabled>
+                <input type="button" id="btnCadastrar" value="CADASTRAR" class="btn btn-success" onclick="cadastrar('<?=$objeto?>')" disabled>
             </div>
             <div class="card shadow mb-4">
                 <input type="button" value="LIMPAR" class="btn btn-danger" onclick="limparCampos()">
             </div>
-
-            <button id="myBtn" onclick="kakaka()">Campo obrigatório não preenchido !</button>
-
-            <div id="myModal" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <p>O campo uepa de preenchimento obrigatório não foi </p>
-                </div>
-
-            </div>
-
         </div>
     </div>
     <!-- Fim Campos de Entrada -->
@@ -240,27 +249,68 @@ if ($objeto == "Impostos") {
 </div>
 
 <script>
-function teste(){
-    window.alert("O código da tecla pressionada foi: " + event.keyCode);
-}
-    document.input_1.onkeypress = teste;
+
+    function limitarInput(obj) {
+        var valor = obj.value.substring(0,3);
+        if (valor > 100) {
+            obj.value = obj.value.substring(0,2);
+        }
+        else {
+            obj.value = obj.value.substring(0,3);
+        }
+    }
+
+    function formataMoeda(a, e, r, t) {
+
+        let n = ""
+            , h = j = 0
+            , u = tamanho2 = 0
+            , l = ajd2 = ""
+            , o = window.Event ? t.which : t.keyCode;
+        if (13 == o || 8 == o)
+            return !0;
+        /*
+        if (n = String.fromCharCode(o),
+        -1 == "0123456789".indexOf(n))
+            return !1;
+         */
+        for (u = a.value.length,
+                 h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+            ;
+        for (l = ""; h < u; h++)
+            -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+        if (l += n,
+        0 == (u = l.length) && (a.value = ""),
+        1 == u && (a.value = "0" + r + "0" + l),
+        2 == u && (a.value = "0" + r + l),
+        u > 2) {
+            for (ajd2 = "",
+                     j = 0,
+                     h = u - 3; h >= 0; h--)
+                3 == j && (ajd2 += e,
+                    j = 0),
+                    ajd2 += l.charAt(h),
+                    j++;
+            for (a.value = "",
+                     tamanho2 = ajd2.length,
+                     h = tamanho2 - 1; h >= 0; h--)
+                a.value += ajd2.charAt(h);
+            a.value += r + l.substr(u - 2, u)
+        }
+        return !1
+    }
+
     function habilitaBotaoCadastrar() {
         var input1 = $('#input_1').val();
         var input2 = $('#input_2').val();
         var input3 = $('#input_3').val();
 
-        input1.replace(" ")
-
-        if ( input1 != "" && input2 != "" && (input3 != null || input3 != "") ) {
+        if ( input1 != "" && input2 != "" && ( input3 != null && input3 != "" ) ) {
             $('#btnCadastrar').removeAttr('disabled');
         } else {
             $('#btnCadastrar').attr('disabled', 'disabled');
         }
     };
-
-    function validaCaractere(item) {
-        alert(item.value);
-    }
 
     function limparCampos() {
         $('#input_1').val("");
@@ -268,42 +318,42 @@ function teste(){
         $('#input_3').val("");
     }
 
-    function cadastrar() {
-        var input1 = $('#input_1').val();
-        var input2 = $('#input_2').val();
-        var input3 = $('#input_3').val();
+    function cadastrar(objeto) {
 
-        console.log(input1, input2, input3);
-    }
+        var input1 = $('#input_1').val() ? $('#input_1').val() : "";
+        var input2 = $('#input_2').val() ? $('#input_2').val() : "";
+        var input3 = $('#input_3').val() ? $('#input_3').val() : "";
+        var input4 = "";
 
-function showModalErro() {
-    // Get the modal
-    var modal = document.getElementById('myModal');
+        var modulo = objeto;
+        var acao   = 'cadastrar';
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (modulo == "Produtos") {
+            input4 = $('#input_4').val() ? $('#input_4').val() : "";
+            var url = "../app/Controllers/ProdutosController.php";
         }
+        if (modulo == "Impostos") {
+            var url = "../app/Controllers/ImpostosController.php";
+        }
+        if (modulo == "Categorias") {
+            var url = "../app/Controllers/CategoriasController.php";
+        }
+
+        $.ajax({
+            "url" : url,
+            "type": 'POST',
+            "data": {
+                acao   : acao,
+                inf1   : input1,
+                inf2   : input2,
+                inf3   : input3,
+                inf4   : input4
+            }
+        }).done(function (resp) {
+            alert(objeto + ' ' + input1 + ' cadastrado com sucesso.');
+        }).fail(function (resp) {
+            console.log('Erro ! Contate o desenvolvedor !');
+        });
     }
-
-}
-
 
 </script>

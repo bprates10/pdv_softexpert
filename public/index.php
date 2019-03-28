@@ -71,10 +71,6 @@ $get = isset($_GET['page']) ? $_GET['page'] : 'home_temporaria';
             cursor: pointer;
         }
     </style>
-
-
-
-
 </head>
 
 <body id="page-top">
@@ -90,7 +86,7 @@ $get = isset($_GET['page']) ? $_GET['page'] : 'home_temporaria';
             <!-- Main Content -->
             <div id="content">
 
-                <?php include_once ('topbar.php'); ?>
+                <?php //include_once ('topbar.php'); ?>
 
                 <!-- Begin Principal Page Content ->
                 <div class="container-fluid" id="div_principal">

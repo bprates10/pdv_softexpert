@@ -36,6 +36,9 @@ class Conexao
             $this->checkTable('impostos');
             $this->checkTable('categorias');
             $this->checkTable('produtos');
+            $this->checkTable('vendas');
+            $this->checkTable('vendas_item');
+            $this->checkTable('vendas_imposto');
 
             return $this->conn;
         }
@@ -105,10 +108,22 @@ class Conexao
                 $params[3] = "";
                 $params[4] = "";
                 break;
-            case 'teste':
-                $params[1] = ",tableteste text";
-                $params[2] = ",tabteste integer";
-                $params[3] = "";
+            case 'vendas':
+                $params[1] = ",valor_total float";
+                $params[2] = ",valor_imposto float";
+                $params[3] = ",ativo text";
+                $params[4] = "";
+                break;
+            case 'vendas_item':
+                $params[1] = ",valor_total float";
+                $params[2] = ",id_venda integer";
+                $params[3] = ",quantidade integer";
+                $params[4] = "";
+                break;
+            case 'vendas_imposto':
+                $params[1] = ",descricao text";
+                $params[2] = ",id_vendas_item integer";
+                $params[3] = ",valor float";
                 $params[4] = "";
                 break;
         }

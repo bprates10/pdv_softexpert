@@ -16,7 +16,7 @@ function routes($page) {
                 $_SESSION['info_views']['title']                            = "Produtos";
                 $_SESSION['info_views']['cards']['card_1']                  = "Total Cadastrado:";
                 $_SESSION['info_views']['cards']['card_2']                  = "Produtos Sem Categoria:";
-                $_SESSION['info_views']['cards']['card_3']['desc']          = "Nome Produto:";
+                $_SESSION['info_views']['cards']['card_3']['desc']          = "Nome Produto :";
                 $_SESSION['info_views']['cards']['card_3']['percentual']    = "50% das vendas";
                 $_SESSION['info_views']['input']['input1']                  = "Código do Produto :";
                 $_SESSION['info_views']['input']['input2']                  = "Descrição :";
@@ -34,8 +34,8 @@ function routes($page) {
                 $_SESSION['info_views']['cards']['card_2']                  = "Média de Produtos por Categoria:";
                 $_SESSION['info_views']['cards']['card_3']['desc']          = "Categoria:";
                 $_SESSION['info_views']['cards']['card_3']['percentual']    = "81% das vendas";
-                $_SESSION['info_views']['input']['input1']                  = "Código da Categoria :";
-                $_SESSION['info_views']['input']['input2']                  = "Descrição :";
+                //$_SESSION['info_views']['input']['input1']                  = "Código da Categoria :";
+                $_SESSION['info_views']['input']['input1']                  = "Descrição :";
                 $_SESSION['info_views']['input']['input3']                  = "Imposto Vinculado :";
 
                 require_once ('view/cadastros/frame_generico.php');
@@ -51,14 +51,14 @@ function routes($page) {
                 $_SESSION['info_views']['cards']['card_3']['desc']          = "Valor Imposto / Total NF";
                 $_SESSION['info_views']['cards']['card_3']['percentual']    = "11% das vendas";
                 $_SESSION['info_views']['input']['input1']                  = "Descrição :";
-                $_SESSION['info_views']['input']['input2']                  = "Valor (R$) :";
-                $_SESSION['info_views']['input']['input3']                  = "Percentual (%) :";
+                //$_SESSION['info_views']['input']['input2']                  = "Valor (R$) :";
+                $_SESSION['info_views']['input']['input2']                  = "Percentual (%) :";
 
                 require_once ('view/cadastros/frame_generico.php');
                 unset($_SESSION['info_views']);
                 break;
 
-            case 'venda_pdv':
+            case 'telaVendas':
                 require_once ('view/vendas/tela_vendas.php');
                 break;
             case 'home_temporaria':

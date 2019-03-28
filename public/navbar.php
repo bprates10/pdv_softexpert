@@ -43,7 +43,7 @@
         </div>
     </li>
 
-    <!-- Nav Item - Relatórios / Pages Collapse Menu -->
+    <!-- Nav Item - Relatórios / Pages Collapse Menu - ->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-adobe"></i>
@@ -52,13 +52,13 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Relatórios de:</h6>
-                <!-- antiga buttons.html, cards.html, cards.html -->
+                <!- - antiga buttons.html, cards.html, cards.html - ->
                 <a class="collapse-item" href="index.php?page=cadastroProdutos">Produtos Cadastrados</a>
                 <a class="collapse-item" href="index.php?page=cadastroCategorias">Categorias Cadastradas</a>
                 <a class="collapse-item" href="index.php?page=cadastroImpostos">Impostos Cadastrados</a>
             </div>
         </div>
-    </li>
+    </li-->
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
@@ -69,9 +69,9 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Balcão:</h6>
-                <a class="collapse-item" href="utilities-color.html">Venda</a>
-                <a class="collapse-item" href="utilities-border.html">Estorno</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
+                <a class="collapse-item" href="index.php?page=telaVendas">Venda</a>
+                <!--a class="collapse-item" href="utilities-border.html">Estorno</a>
+                <a class="collapse-item" href="utilities-other.html">Other</a-->
             </div>
         </div>
     </li>

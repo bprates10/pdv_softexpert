@@ -121,4 +121,18 @@ class DaoProdutos extends BaseDAO
         }
         return $count;
     }
+
+    /* Cria um registro na tabela Categorias
+     * Recebe uma String Código, uma String Descricao e uma String Id_Categoria
+     * Não retorna valor
+     */
+    public function cadastrar($codigo, $descricao = "Sem descrição", $id_categoria = "1", $preco) {
+
+        $con = $this->getConexao();
+        $con->connect();
+
+        $sql = "insert into produtos (codigo, descricao, preco, id_categoria) values ('$codigo', '$descricao', $preco, '$id_categoria')";
+        $con->query($sql);
+    }
+
 }

@@ -8,7 +8,6 @@
 
 namespace DAO;
 
-
 use Models\Impostos;
 
 class DaoImpostos extends BaseDAO
@@ -67,5 +66,29 @@ class DaoImpostos extends BaseDAO
             }
         }
         return $count;
+    }
+
+    /* Cria um registro na tabela Impostos
+     * Recebe uma String Descricao e uma String Percentual
+     * Não retorna valor
+     */
+    public function cadastrar($descricao = "Sem descrição", $percentual = "1") {
+
+        $con = $this->getConexao();
+        $con->connect();
+
+        $sql = "insert into impostos (descricao, valor) values ('$descricao', '$percentual')";
+
+        $con->query($sql);
+    }
+
+    public function addImpostoVenda($id_venda_item,$id_imposto,$valor_total_imposto) {
+        $con = $this->getConexao();
+        $con->connect();
+
+        $sql = "insert into vendas_imposto (id_vendas_item,id_imposto,valor) ";
+        $sql.= "values ($id_venda_item,$id_imposto,$valor_total_imposto)";
+
+        $con->query($sql);
     }
 }

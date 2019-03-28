@@ -94,4 +94,18 @@ class DaoCategorias extends BaseDAO
         }
         return $count;
     }
+
+    /* Cria um registro na tabela Categorias
+     * Recebe uma String Código, uma String Descricao e uma String Id_Categoria
+     * Não retorna valor
+     */
+    public function cadastrar($descricao = "Sem descrição", $id_categoria = "1") {
+
+        $con = $this->getConexao();
+        $con->connect();
+
+        $sql = "insert into categorias (descricao, id_imposto) values ('$descricao', '$id_categoria')";
+
+        $con->query($sql);
+    }
 }
