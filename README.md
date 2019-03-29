@@ -3,18 +3,25 @@ PDV Softexpert é uma ferramenta simples para cadastro de mercadorias, categoria
 Surgiu da necessidade de criar um projeto para a empresa solicitante, para fins avaliativos e sem valor comercial.
 A ferramenta é poderosa, porém não deve ser utilizada no mundo real, servindo apenas para fins didáticos.
 
-Sobre a ferramenta:
-- (em desenvolvimento) Possibilita o cadastro, exclusão e edição de produtos;
-- (em desenvolvimento) Possibilita a cadastro, exclusão e edição de categorias;
-- (em desenvolvimento) Possibilita a cadastro, exclusão e edição de impostos;
+Sobre a ferramenta (módulo Cadastros):
+- Possibilita o cadastro de produtos;
+- Possibilita a cadastro de categorias;
+- Possibilita a cadastro de impostos;
 
-A ferramenta possui um módulo de PDV. A tela PDV permite:
-- (em desenvolvimento) A venda de UM a N produtos por venda;
-- (em desenvolvimento) A quantidade dos produtos por venda;
-- (em desenvolvimento) O valor de cada item multiplicado pela quantidade total adquirida na venda;
-- (em desenvolvimento) O valor do imposto pago em cada item;
-- (em desenvolvimento) O valor total da venda, em R$;
-- (em desenvolvimento) O valor total dos impostos da venda, em R$.
+Sobre a ferramenta (módulo PDV):
+- Pemrite a venda de UM a N produtos por venda;
+- Permite editar a quantidade dos produtos por venda;
+- Calcula automaticamente o valor de cada item multiplicado pela quantidade total adquirida na venda;
+- Calcula automaticamente o valor do imposto pago em cada item;
+- Calcula automaticamente o valor total da venda, em R$;
+- Calcula automaticamente o valor total dos impostos da venda, em R$.
+
+Funcionalidades a serem implementadas:
+- (em desenvolvimento) Exclusão e edição de produtos cadastrados;
+- (em desenvolvimento) Exclusão e edição de categorias;
+- (em desenvolvimento) Exclusão e edição de impostos;
+- (em desenvolvimento) Finalização da venda, emitindo o cupom fiscal.
+- Melhorias na base de dados (PostgreSQL).
 
 Sobre a codificação:
 - Utiliza pattern DAO, mantendo bem definido a divisão entre regra de negócio e regra de acesso ao banco, permitindo reutilização classes;
@@ -22,3 +29,5 @@ Sobre a codificação:
 - Utiliza pattern Singleton, permitindo apenas uma instância de classe para otimizar as requisições da aplicação no banco de dados;
 - Utiliza requisições assíncronas em Ajax para impedir que o conteúdo da página seja recarregado a cada nova solicitação.
 - Utiliza uma classe responsável pelo roteamento, driblando a ausência de um framework ao mesmo tempo em que mantém o código simples, objetivo desde projeto.
+- Utiliza um frame genérico e adaptável a cada requisição de módulo/menu.
+- Utiliza banco de dados PostgreSQl versão 9.4.
