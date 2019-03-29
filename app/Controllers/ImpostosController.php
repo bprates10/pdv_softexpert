@@ -12,13 +12,6 @@ use DAO\DaoImpostos;
 
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "bootstrap.php";
 
-if (isset($_POST['acao']) && $_POST['acao'] == 'cadastrar') {
-
-    $controller = new ImpostosController();
-    $controller->cadastrar($_POST);
-    return true;
-}
-
 class ImpostosController
 {
     public function cadastrar($params = []) {

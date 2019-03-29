@@ -26,7 +26,9 @@ class DaoCategorias extends BaseDAO
         if ($id != "") {
             $where = " where id = $id";
         }
-        $sql = "select * from categorias" . $where;
+        $sql = "select cat.id, cat.descricao,  imp.descricao as id_imposto
+                from categorias cat
+                inner join impostos imp on imp.id = cat.id_imposto" . $where;
 
         $result = $con->query($sql);
         $arrCategorias = [];

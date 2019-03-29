@@ -12,13 +12,6 @@ use DAO\DaoCategorias;
 
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "bootstrap.php";
 
-if (isset($_POST['acao']) && $_POST['acao'] == 'cadastrar') {
-
-    $controller = new CategoriasController();
-    $controller->cadastrar($_POST);
-    return true;
-}
-
 class CategoriasController
 {
     public function cadastrar($params = []) {

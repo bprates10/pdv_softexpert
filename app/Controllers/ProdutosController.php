@@ -12,13 +12,6 @@ use DAO\DaoProdutos;
 
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . "bootstrap.php";
 
-if (isset($_POST['acao']) && $_POST['acao'] == 'cadastrar') {
-
-    $controller = new ProdutosController();
-    $controller->cadastrar($_POST);
-    return true;
-}
-
 class ProdutosController
 {
     public function cadastrar($params = []) {

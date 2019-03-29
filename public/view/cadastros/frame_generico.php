@@ -21,28 +21,23 @@ $input2 = isset($_SESSION['info_views']['input']['input2']) ? $_SESSION['info_vi
 $input3 = isset($_SESSION['info_views']['input']['input3']) ? $_SESSION['info_views']['input']['input3'] : "";
 
 $objeto = $_SESSION['info_views']['call'];
-$menus = ["ID", "Descrição"];
 
 if ($objeto == "Produtos") {
-    array_push($menus, "Preço");
-    array_push($menus, "Categoria");
 
     $input4  = "Preço (R$)";
 
     $obj = new DaoProdutos();
-    $arrList = $obj->getListagem();
     $value1  = $obj->getContagemTotal();
     $value2  = $obj->getProdutosSemCategoria();
 
     $obj = new \DAO\DaoCategorias();
     $value3  = $obj->getListagem();
 }
-
 if ($objeto == "Categorias") {
-    array_push($menus, "ID Imposto");
+    //array_push($menus, "ID Imposto");
 
     $obj = new \DAO\DaoCategorias();
-    $arrList = $obj->getListagem();
+    //$arrList = $obj->getListagem();
     $value1  = $obj->getContagemTotal();
 
     $obj     = new DaoProdutos();
@@ -52,17 +47,15 @@ if ($objeto == "Categorias") {
     $value3  = $obj->getListagem();
 
 }
-
 if ($objeto == "Impostos") {
-    array_push($menus, "Percentual (%)");
+    //array_push($menus, "Percentual (%)");
 
     $obj = new \DAO\DaoImpostos();
-    $arrList = $obj->getListagem();
+    //$arrList = $obj->getListagem();
     $value1  = $obj->getContagemTotal();
     $obj     = new \DAO\DaoCategorias();
     $value2  = $obj->getCategoriasSemImpostos();
 }
-
 ?>
 
 <div class="container-fluid" id="<?= $id_div ?>">
@@ -201,50 +194,18 @@ if ($objeto == "Impostos") {
             <div class="card shadow mb-5">
                 <input type="button" id="btnCadastrar" value="CADASTRAR" class="btn btn-success" onclick="cadastrar('<?=$objeto?>')" disabled>
             </div>
-            <div class="card shadow mb-4">
-                <input type="button" value="LIMPAR" class="btn btn-danger" onclick="limparCampos()">
+            <div class="card shadow mb-5">
+                <input type="button" value="LIMPAR" class="btn btn-danger" onclick="limparCampos('<?=$objeto?>')">
+            </div>
+            <div class="card shadow mb-5">
+                <input type="button" value="PESQUISAR" class="btn btn-info" onclick="getGridItens('<?=$objeto?>')">
             </div>
         </div>
     </div>
     <!-- Fim Campos de Entrada -->
 
-    <div class="row">
-        <div class="content table-responsive table-full-width">
-            <table id="grid" class="table table-hover table-striped" cellspacing="0" width="100%">
-                <thead class="header">
-                <th><?= $menus[0] ?></th>
-                <th><?= $menus[1] ?></th>
-                <?php if (isset($menus[2])) : ?>
-                <th><?= $menus[2] ?></th>
-                <?php endif; ?>
-                <?php if (isset($menus[3])) : ?>
-                    <th><?= $menus[3] ?></th>
-                <?php endif; ?>
-                <th><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> </a> </th>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($arrList as $item) : ?>
-                    <tr>
-                        <td> <?= $item->getId();            ?> </td>
-                        <td> <?= $item->getDescricao();     ?> </td>
-                        <?php if ($item instanceof \Models\Produtos) : ?>
-                        <td> R$<?= $item->getPreco();       ?> </td>
-                        <td> <?= $item->getIdCategoria();   ?> </td>
-                        <?php elseif ($item instanceof \Models\Categorias) : ?>
-                        <td> <?= $item->getIdImposto();     ?> </td>
-                        <?php elseif ($item instanceof \Models\Impostos) : ?>
-                            <td> <?= $item->getValor();     ?>% </td>
-                        <?php endif; ?>
-                        <td>
-                            <i class="fa fa-edit" aria-hidden="true" onclick="alert('hey')"></i>
-                            <i class="fa fa-trash" aria-hidden="true" onclick="alert('1');"></i>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+    <div class="row" id="div_grid">
+
     </div>
 </div>
 
@@ -312,10 +273,13 @@ if ($objeto == "Impostos") {
         }
     };
 
-    function limparCampos() {
+    function limparCampos(obj) {
         $('#input_1').val("");
         $('#input_2').val("");
         $('#input_3').val("");
+        if (obj == "Produtos") {
+            $('#input_4').val("");
+        }
     }
 
     function cadastrar(objeto) {
@@ -330,20 +294,25 @@ if ($objeto == "Impostos") {
 
         if (modulo == "Produtos") {
             input4 = $('#input_4').val() ? $('#input_4').val() : "";
-            var url = "../app/Controllers/ProdutosController.php";
+            //var url = "../app/Controllers/ProdutosController.php";
+            var url = "view/cadastros/grid_generica.php";
         }
         if (modulo == "Impostos") {
-            var url = "../app/Controllers/ImpostosController.php";
+            //var url = "../app/Controllers/ImpostosController.php";
+            var url = "view/cadastros/grid_generica.php";
         }
         if (modulo == "Categorias") {
-            var url = "../app/Controllers/CategoriasController.php";
+            //var url = "../app/Controllers/CategoriasController.php";
+            var url = "view/cadastros/grid_generica.php";
         }
 
         $.ajax({
             "url" : url,
             "type": 'POST',
+            "dataType": 'html',
             "data": {
                 acao   : acao,
+                modulo : modulo,
                 inf1   : input1,
                 inf2   : input2,
                 inf3   : input3,
@@ -351,6 +320,40 @@ if ($objeto == "Impostos") {
             }
         }).done(function (resp) {
             alert(objeto + ' ' + input1 + ' cadastrado com sucesso.');
+            limparCampos();
+            $("#div_grid").html(resp);
+        }).fail(function (resp) {
+            console.log('Erro ! Contate o desenvolvedor !');
+        });
+    }
+
+    function getGridItens(objeto) {
+
+        var modulo = objeto;
+        var acao   = 'visualizar';
+
+        if (modulo == "Produtos") {
+            var url = "view/cadastros/grid_generica.php";
+        }
+        if (modulo == "Impostos") {
+            var url = "view/cadastros/grid_generica.php";
+        }
+        if (modulo == "Categorias") {
+            var url = "view/cadastros/grid_generica.php";
+        }
+
+        $.ajax({
+            "url" : url,
+            "type": 'POST',
+            "dataType": 'html',
+            "data": {
+                acao   : acao,
+                modulo : modulo
+            }
+        }).done(function (resp) {
+            console.log(resp);
+            alert("Atualizado");
+            $("#div_grid").html(resp);
         }).fail(function (resp) {
             console.log('Erro ! Contate o desenvolvedor !');
         });
